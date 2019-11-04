@@ -15,3 +15,11 @@ EncoderRNN에  input 단어의 개수와 hidden_size를 통해 nn.Embedding, gru
 <img src = https://user-images.githubusercontent.com/55969260/68080987-bc7eb900-fe49-11e9-9681-ab983bbe09d0.png> <br>
 AttnDecoderRNN에 hidden_size 와 output_lang.n_words를 파라미터로 넣어준다. <br>
 <img src = https://user-images.githubusercontent.com/55969260/68081005-11baca80-fe4a-11e9-8e72-8eafe6dd265d.png> <br>
+<img src = https://user-images.githubusercontent.com/55969260/68081021-6100fb00-fe4a-11e9-8a73-c4a7d46016c2.png> <br>
+<br>
+깊이 들어가기 전에 trainiters를 보자. 파라미터로 encoder1, decoder1, n_iters, print_every가 들어간다. optimizer 함수로는 SGD를 택하였고 
+training_pairs에 fra, eng 쌍이 텐서로 들어가게된다. 그리고 loss를 구할 때 train에 input_variable, target_variable, encoder1, decoder1, encoder_optimizer, decoder_optimizer, critertion이 들어간다. <br>
+<img src = https://user-images.githubusercontent.com/55969260/68101394-ccad9b80-ff10-11e9-8b68-31d0f4c5d833.png> <br>
+train 함수로 들어가보자. <br>
+<img src = https://user-images.githubusercontent.com/55969260/68101445-ff579400-ff10-11e9-93a3-2fabe5959427.png> <br>
+afd
