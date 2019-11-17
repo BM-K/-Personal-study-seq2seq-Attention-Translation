@@ -22,6 +22,6 @@ training_pairs에 fra, eng 쌍이 텐서로 들어가게된다. 그리고 loss�
 <img src = https://user-images.githubusercontent.com/55969260/68101394-ccad9b80-ff10-11e9-8b68-31d0f4c5d833.png> <br>
 train 함수로 들어가보자. <br>
 <img src = https://user-images.githubusercontent.com/55969260/68101445-ff579400-ff10-11e9-93a3-2fabe5959427.png> <br>
-encoder_outputs를 max_length, encoder.hidden_size로 초기화하고 for문을 돌면서 encoder1에 input_variable[ei]와 encoder_hidden을 넣어준다. input_variable[ei]는 단어 하나의 텐서 ex( [[145]]] ) 값이 들어간다. 그리고 gru를 거친뒤 아웃풋을 encoder_outputs[ei]에 넣어준다. 그리고 지도학습을 할지 비지도학습을 할지 결정해준다. use_teacher_forcing 부분을 보자 <br>
+encoder_outputs를 max_length, encoder.hidden_size로 초기화하고 for문을 돌면서 encoder1에 input_variable[ei]와 encoder_hidden을 넣어준다. input_variable[ei]는 단어 하나의 텐서 ex( [[145]]] ) 값이 들어간다. 그리고 gru를 거친뒤 아웃풋을 encoder_outputs[ei]에 넣어준다. 그리고 Teacher forcing을 할지 안 할지 결정해준다. use_teacher_forcing 부분을 보자 <br>
 <img src = https://user-images.githubusercontent.com/55969260/68101605-ccfa6680-ff11-11e9-82a0-552144e0d6be.png> <br>
-<---작업중--->
+
