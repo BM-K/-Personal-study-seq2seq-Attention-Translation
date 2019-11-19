@@ -25,5 +25,6 @@ train 함수로 들어가보자. <br>
 encoder_outputs를 max_length, encoder.hidden_size로 초기화하고 for문을 돌면서 encoder1에 input_variable[ei]와 encoder_hidden을 넣어준다. input_variable[ei]는 단어 하나의 텐서 ex( [[145]]] ) 값이 들어간다. 그리고 gru를 거친뒤 아웃풋을 encoder_outputs[ei]에 넣어준다. 그리고 Teacher forcing을 할지 안 할지 결정해준다. use_teacher_forcing 부분을 보자 <br>
 <img src = https://user-images.githubusercontent.com/55969260/68101605-ccfa6680-ff11-11e9-82a0-552144e0d6be.png> <br>
 decoder에 decoder_input, decoder_hidden, encoder_outputs 를 넣어준다. decoder forward에서 다음 그림과 같이 수행되며 output과 target_variable 과의 loss를 구하고 다음 decoder 입력 값으로 target_variable 을 넣어준다.
-<br><img src=https://user-images.githubusercontent.com/55969260/69004095-edcead00-0950-11ea-8cfd-e1c396b20dd4.png><br>
-<작업중>
+<br><img src=https://user-images.githubusercontent.com/55969260/69004095-edcead00-0950-11ea-8cfd-e1c396b20dd4.png><br><br>
+"Teacher forcing 없이 : 자신의 예측을 다음 입력으로 사용" ↓
+<br><img src=https://user-images.githubusercontent.com/55969260/69109583-8d0fb380-0abb-11ea-8ece-3e0708b639fa.png><br>
