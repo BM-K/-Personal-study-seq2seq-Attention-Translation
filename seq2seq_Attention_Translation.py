@@ -1,4 +1,3 @@
-
 from __future__ import unicode_literals, print_function, division
 from io import open
 import unicodedata
@@ -370,7 +369,7 @@ class AttnDecoderRNN(nn.Module):
         embedded = self.dropout(embedded)
 
         attn_weights = F.softmax(
-            self.attn(torch.cat((embedded[0], hidden[0]), 1)), dim=1)
+            self.attn(torch.cat((embedded[0], hidden[0]), 1)), dim=1) #
         attn_applied = torch.bmm(attn_weights.unsqueeze(0),
                                  encoder_outputs.unsqueeze(0))
 
@@ -455,7 +454,9 @@ def variablesFromPair(pair):
 teacher_forcing_ratio = 0.5
 
 
-def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, decoder_optimizer, criterion, max_length=MAX_LENGTH):
+def train(input_variable, target_variable, encoder, decoder,
+          encoder_optimizer, decoder_optimizer, criterion, max_length=MAX_LENGTH):
+
     encoder_hidden = encoder.initHidden()
 
     encoder_optimizer.zero_grad()
@@ -477,7 +478,7 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
     decoder_input = Variable(torch.LongTensor([[SOS_token]]))
     decoder_input = decoder_input.cuda() if use_cuda else decoder_input
 
-    decoder_hidden = encoder_hidden
+    decoder_hidden = encoder_hidden # 마지막 히든
 
     use_teacher_forcing = True if random.random() < teacher_forcing_ratio else False
 
@@ -485,8 +486,8 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
         # Teacher forcing: 목표를 다음 입력으로 전달
         for di in range(target_length):
             decoder_output, decoder_hidden, decoder_attention = decoder(
-                decoder_input, decoder_hidden, encoder_outputs)
-            loss += criterion(decoder_output, target_variable[di])
+                decoder_input, decoder_hidden, encoder_outputs) # en_out = 10*256
+            loss += criterion(decoder_output, target_variable[di]) # 단어 하나 텐서 [[12]]
             decoder_input = target_variable[di]  # Teacher forcing
 
     else:
@@ -496,7 +497,6 @@ def train(input_variable, target_variable, encoder, decoder, encoder_optimizer, 
                 decoder_input, decoder_hidden, encoder_outputs)
             topv, topi = decoder_output.data.topk(1)
             ni = topi[0][0]
-
             decoder_input = Variable(torch.LongTensor([[ni]]))
             decoder_input = decoder_input.cuda() if use_cuda else decoder_input
 
@@ -566,6 +566,7 @@ def trainIters(encoder, decoder, n_iters, print_every=1000, plot_every=100, lear
 
         loss = train(input_variable, target_variable, encoder,
                      decoder, encoder_optimizer, decoder_optimizer, criterion)
+
         print_loss_total += loss
         plot_loss_total += loss
 
@@ -647,6 +648,8 @@ def evaluate(encoder, decoder, sentence, max_length=MAX_LENGTH):
             decoded_words.append('<EOS>')
             break
         else:
+            ni = ni.cpu().numpy() # gpu -> cpu, tensor -> numpy
+            ni = int(ni) # numpy array -> int
             decoded_words.append(output_lang.index2word[ni])
 
         decoder_input = Variable(torch.LongTensor([[ni]]))
@@ -719,49 +722,49 @@ evaluateRandomly(encoder1, attn_decoder1)
 # 간단하게 실행할 수 있습니다. 열은 입력 단계와 행이 출력 단계입니다:
 #
 
-# output_words, attentions = evaluate(
-#     encoder1, attn_decoder1, "je suis trop froid .")
-# plt.matshow(attentions.numpy())
+output_words, attentions = evaluate(
+    encoder1, attn_decoder1, "je suis trop froid .")
+plt.matshow(attentions.numpy())
 
 
 ######################################################################
 # 더 나은 보기 경험을 위해 축과 라벨을 추가하는 추가 작업을 수행합니다:
 #
 
-# def showAttention(input_sentence, output_words, attentions):
-#     # colorbar로 그림 설정
-#     fig = plt.figure()
-#     ax = fig.add_subplot(111)
-#     cax = ax.matshow(attentions.numpy(), cmap='bone')
-#     fig.colorbar(cax)
-#
-#     # 축 설정
-#     ax.set_xticklabels([''] + input_sentence.split(' ') +
-#                        ['<EOS>'], rotation=90)
-#     ax.set_yticklabels([''] + output_words)
-#
-#     # 매 틱마다 라벨 보여주기
-#     ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
-#     ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
-#
-#     plt.show()
-#
-#
-# def evaluateAndShowAttention(input_sentence):
-#     output_words, attentions = evaluate(
-#         encoder1, attn_decoder1, input_sentence)
-#     print('input =', input_sentence)
-#     print('output =', ' '.join(output_words))
-#     showAttention(input_sentence, output_words, attentions)
-#
-#
-# evaluateAndShowAttention("elle a cinq ans de moins que moi .")
-#
-# evaluateAndShowAttention("elle est trop petit .")
-#
-# evaluateAndShowAttention("je ne crains pas de mourir .")
-#
-# evaluateAndShowAttention("c est un jeune directeur plein de talent .")
+def showAttention(input_sentence, output_words, attentions):
+    # colorbar로 그림 설정
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    cax = ax.matshow(attentions.numpy(), cmap='bone')
+    fig.colorbar(cax)
+
+    # 축 설정
+    ax.set_xticklabels([''] + input_sentence.split(' ') +
+                       ['<EOS>'], rotation=90)
+    ax.set_yticklabels([''] + output_words)
+
+    # 매 틱마다 라벨 보여주기
+    ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
+
+    plt.show()
+
+
+def evaluateAndShowAttention(input_sentence):
+    output_words, attentions = evaluate(
+        encoder1, attn_decoder1, input_sentence)
+    print('input =', input_sentence)
+    print('output =', ' '.join(output_words))
+    showAttention(input_sentence, output_words, attentions)
+
+
+evaluateAndShowAttention("elle a cinq ans de moins que moi .")
+
+evaluateAndShowAttention("elle est trop petit .")
+
+evaluateAndShowAttention("je ne crains pas de mourir .")
+
+evaluateAndShowAttention("c est un jeune directeur plein de talent .")
 
 
 ######################################################################
