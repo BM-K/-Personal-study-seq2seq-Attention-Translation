@@ -30,3 +30,9 @@ decoder에 decoder_input, decoder_hidden, encoder_outputs 를 넣어준다. deco
 <br><img src=https://user-images.githubusercontent.com/55969260/69109583-8d0fb380-0abb-11ea-8ece-3e0708b639fa.png><br>
 가장 큰 값의 주소를 알기 위해서 Tesorltopk를 사용한다. ni는 디코더가 예측한 가장 큰 값을 갖고 있다. ex) tensor[245]. 다음 디코더 입력으로 Variable(torch.LongTenso([[ni]])) 를 넣어준다. loss 값을 갱신해주고 디코더가 EOS_token 을 예측하면 반복문을 중단한다. 오류 역전파를 수행하고 loss 평균을 리턴한다. 다시 train 으로 온다. 
 <br><img src=https://user-images.githubusercontent.com/55969260/69116647-6ad46080-0ad0-11ea-8dbd-c38af8164459.png><br>
+print 할 loss 값과 plot 할 loss 값을 갱신해준다. 다음으로 evaluate 부분을 보자 
+<br><img src=https://user-images.githubusercontent.com/55969260/69116924-55ac0180-0ad1-11ea-9043-f7e7784ad280.png><br>
+<br><img src=https://user-images.githubusercontent.com/55969260/69117018-bb988900-0ad1-11ea-99f7-d273683547ef.png><br>
+encoder1, decoder1, sentence, max_length parameter. input variable로 sentence를 Tesor화 해서 넣는다. encoder output을 얻기위해 input 길이만큼 for 문을 반복한다. 나중에 도식화를 위해서 디코더의 어텐션 출력을 저장할 decoded_words 배열을 선언한다. 
+<br><img src=https://user-images.githubusercontent.com/55969260/69117787-36fb3a00-0ad4-11ea-8d20-c1bdcf4469c4.png><br>
+decoder가 예측한 값을 얻기 위한 for loop이다. 
