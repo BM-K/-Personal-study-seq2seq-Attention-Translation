@@ -615,7 +615,7 @@ def showPlot(points):
 # 단어를 예측할 때마다 그 단어를 출력 문자열에 추가합니다.
 # 만약 EOS 토큰을 예측하면 거기에서 멈춥니다.
 # 나중에 도식화를 위해서 디코더의 어텐션 출력을 저장합니다.
-#
+
 
 def evaluate(encoder, decoder, sentence, max_length=MAX_LENGTH):
     input_variable = variableFromSentence(input_lang, sentence)
