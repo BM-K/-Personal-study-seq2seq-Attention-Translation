@@ -28,3 +28,5 @@ decoder에 decoder_input, decoder_hidden, encoder_outputs 를 넣어준다. deco
 <br><img src=https://user-images.githubusercontent.com/55969260/69004095-edcead00-0950-11ea-8cfd-e1c396b20dd4.png><br><br>
 "Teacher forcing 없이 : 자신의 예측을 다음 입력으로 사용" ↓
 <br><img src=https://user-images.githubusercontent.com/55969260/69109583-8d0fb380-0abb-11ea-8ece-3e0708b639fa.png><br>
+가장 큰 값의 주소를 알기 위해서 Tesorltopk를 사용한다. ni는 디코더가 예측한 가장 큰 값을 갖고 있다. ex) tensor[245]. 다음 디코더 입력으로 Variable(torch.LongTenso([[ni]])) 를 넣어준다. loss 값을 갱신해주고 디코더가 EOS_token 을 예측하면 반복문을 중단한다. 오류 역전파를 수행하고 loss 평균을 리턴한다. 다시 train 으로 온다. 
+<br><img src=https://user-images.githubusercontent.com/55969260/69116647-6ad46080-0ad0-11ea-8dbd-c38af8164459.png><br>
