@@ -36,4 +36,3 @@ print 할 loss 값과 plot 할 loss 값을 갱신해준다. 다음으로 evaluat
 encoder1, decoder1, sentence, max_length parameter. input variable로 sentence를 Tesor화 해서 넣는다. encoder output을 얻기위해 input 길이만큼 for 문을 반복한다. 나중에 도식화를 위해서 디코더의 어텐션 출력을 저장할 decoded_words 배열을 선언한다. 
 <br><img src=https://user-images.githubusercontent.com/55969260/69117787-36fb3a00-0ad4-11ea-8d20-c1bdcf4469c4.png><br>
 decoder가 예측한 값을 얻기 위한 for loop이다. 
-<br> 모델 저장 & 불러오기 공부후 적용해보기 and test acc 적용해보기  <작성중>
